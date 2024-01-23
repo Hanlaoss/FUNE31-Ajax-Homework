@@ -1,0 +1,70 @@
+﻿@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div id="card">
+	@* <div class="card mb-3">
+		<img src="..." class="card-img-top" alt="...">
+		<div class="card-body">
+			<h5 class="card-title">
+				Card title
+			</h5>
+			<p class="card-text"> This is a wider card with supporting text below as a natural lead -in to additional content.This content is a little bit longer.</p>
+			<p class="card-text"> <small class="text-body-secondary"> Last updated 3 mins ago </small></p>
+		</div>
+	</div> *@
+</div>
+@section Scripts {
+	<script src="~/js/travel.js"></script>
+	<script>
+		console.log(spots.CommonFormat.Section[0].file.img[0].text);
+
+		let card = document.querySelector("#card");
+
+		const htmlSpots = spots.CommonFormat.Section.map((spot) => {
+			const { RowNumber, REF_WP, CAT1, CAT2, SERIAL_NO, MEMO_TIME, stitle, xbody, avBegin, avEnd, idpt, address, xpostDate, file, langinfo, POI, info, longitude, latitude, MRT } = spot
+
+			let img, description;
+			try 
+			{
+				img = file.img[0].text
+				description = file.img[0].description
+			}catch(error)
+			{
+				img = "";
+				description = "";
+			}
+
+			return (`
+					<div class="card mb-3">
+						<img src="${img}" class="card-img-top" alt="${description}">
+						<div class="card-body">
+							<h5 class="card-title">${stitle}</h5>
+							<p class="card-text">RowNumber : ${RowNumber}</p>
+							<p class="card-text">REF_WP : ${REF_WP}</p>
+							<p class="card-text">CAT1 : ${CAT1}</p>
+							<p class="card-text">CAT2 : ${CAT2}</p>
+							<p class="card-text">SERIAL_NO : ${SERIAL_NO}</p>
+							<p class="card-text">MEMO_TIME : ${MEMO_TIME}</p>
+							<p class="card-text">xbody : ${xbody}</p>
+							<p class="card-text">avBegin : ${avBegin}</p>
+							<p class="card-text">avEnd : ${avEnd}</p>
+							<p class="card-text">idpt : ${idpt}</p>
+							<p class="card-text">address : ${address}</p>
+							<p class="card-text">xpostDate : ${xpostDate}</p>
+							<p class="card-text">langinfo : ${langinfo}</p>
+							<p class="card-text">POI : ${POI}</p>
+							<p class="card-text">info : ${info}</p>
+							<p class="card-text">longitude : ${longitude}</p>
+							<p class="card-text">latitude : ${latitude}</p>
+							<p class="card-text">MRT : ${MRT}</p>
+						</div>
+					</div>
+					`)
+		});
+
+		card.innerHTML = htmlSpots.join('');
+	</script>
+}
