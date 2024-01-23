@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "Homework2";
+}
+
+<h1>Homework2</h1>
+<div>姓名 : </div>
+<input type="text" id="name" />
+<div id="check"></div>
+<hr />
+<div>電子郵件 : </div>
+<input type="text" />
+<hr />
+<div>年紀 :</div>
+<input type="text"/>
+<hr />
+<button id="submit">送出</button>
+
+@section Scripts{
+    <script>
+		const name = document.getElementById("name");
+		const check = document.getElementById("check");
+
+		
+		name.addEventListener("change", async() => {
+			const response = await fetch(`@Url.Content("~/api/checkaccount")` + `?name=${name.value}` )
+			const tf = await response.json();
+			if (tf == true) {
+				check.innerHTML = '帳號已存在';
+			} else {
+				check.innerHTML = '帳號可使用';
+			}
+        });
+
+    </script>
+
+}

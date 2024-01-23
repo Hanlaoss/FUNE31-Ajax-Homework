@@ -1,0 +1,57 @@
+﻿@{
+	ViewData["Title"] = "First";
+}
+
+<h1>First</h1>
+<button class="btn btn-sm btn-primary" id="btn">Ajax</button>
+<button class="btn btn-sm btn-primary" id="btnStop">Stop</button>
+<img src="" id="img" style="display:none"/>
+<div id="div1" class="alert"></div>
+
+@section Scripts {
+	<script>
+		const btn = document.querySelector("#btn");
+		const theDiv = document.querySelector("#div1");
+		const imgLoader = document.querySelector("#img");
+		const btnStop = document.querySelector("#btnStop");
+		let abortController;
+
+		btnStop.addEventListener('click', async () => {
+			abortController.abort();
+		})
+
+
+		btn.addEventListener('click', async() => {
+			try {
+				imgLoader.style.display = "inline";
+				btn.disabled = true;
+
+				abortController = new AbortController();
+				const signal = abortController.signal;
+
+				const reponse = await fetch('@Url.Content("~/api/index")', {signal});
+				if (!reponse.ok) {
+					throw new Error(`HTTP error! status: ${reponse.status}`);
+				}
+				const data = await reponse.text();
+				theDiv.innerHTML = `<h2>${data}</h2>`;
+			} catch (error) {
+				theDiv.innerHTML = `<h2>${error}</h2>`;
+			} finally {
+				imgLoader.style.display = "none";
+				btn.disabled = false;
+			}
+		})
+
+		// btn.addEventListener("click", () => {
+		// 	fetch('@Url.Content("~/api/index")')
+		// 		.then(response => {
+		// 			return response.text();
+		// 		})
+		// 		.then(data => {
+		// 			theDiv.innerHTML = `<h2>${data}</h2>`;
+		// 		})
+		// })
+
+	</script>
+}

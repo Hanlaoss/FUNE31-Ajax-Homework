@@ -8,5 +8,10 @@ namespace WebApplication1.Controllers
 		{
 			return View();
 		}
+
+		public IActionResult Homework2()
+		{
+			return View();
+		}
 	}
 }
